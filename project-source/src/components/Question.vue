@@ -1,16 +1,15 @@
 <script>
     export default{
         props: {
-            questionnaire : Object
+            question : Object
         }
     }
 </script>
 
 <template>
   <tr>
-    <td> {{ questionnaire.id }} </td>
-    <td> <a href="">{{ questionnaire.titre }}</a></td>
-    <td> il y a {{ questionnaire.questions.length }} question</td>
+    <td> {{ question.id }} </td>
+    <td> {{ question.texte }}</td>
     <td> <button>❌</button> <button>🖌️</button> </td>
   </tr>
 </template>
