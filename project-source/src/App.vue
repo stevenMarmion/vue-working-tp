@@ -8,8 +8,12 @@ export default {
   data() {
     return [
       questionnaires = [
-        {  'questionnaire1' : [1,2,3]  },
-        {  'questionnaire2' : [4,5,6]  }
+        {  1 : {'nom' : 'questionnaire1',
+                'questions' : [1,2,3]}
+        },
+        {  2 : {'nom' : 'questionnaire2',
+                'questions' : [4,5,6]}
+        }
       ],
       questions = [
         {  1 : 'question1'  },
@@ -20,6 +24,20 @@ export default {
         {  6 : 'question6'  }
       ]
     ]
+  },
+  methods : {
+    ajouter_questionnaire : function(questionnaire) {
+      this.questionnaires.push(questionnaire);
+    },
+    supprimer_questionnaire : function(id_questionnaire) {
+      delete this.questionnaire[id_questionnaire];
+    },
+    ajouter_question : function(question) {
+      this.questions.push(question);
+    },
+    supprimer_question : function(id_question) {
+      delete this.questions[id_question];
+    },
   }
 }
 </script>
