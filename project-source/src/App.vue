@@ -1,6 +1,27 @@
-<script setup>
+<script>
+// Options API
+
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
+
+export default {
+  data() {
+    return [
+      questionnaires = [
+        {  'questionnaire1' : [1,2,3]  },
+        {  'questionnaire2' : [4,5,6]  }
+      ],
+      questions = [
+        {  1 : 'question1'  },
+        {  2 : 'question2'  },
+        {  3 : 'question3'  },
+        {  4 : 'question4'  },
+        {  5 : 'question5'  },
+        {  6 : 'question6'  }
+      ]
+    ]
+  }
+}
 </script>
 
 <template>
