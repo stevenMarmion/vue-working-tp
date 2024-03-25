@@ -8,20 +8,16 @@ export default {
   data() {
     return [
       questionnaires = [
-        {  1 : {'nom' : 'questionnaire1',
-                'questions' : [1,2,3]}
-        },
-        {  2 : {'nom' : 'questionnaire2',
-                'questions' : [4,5,6]}
-        }
+        { id : 1, titre : 'questionnaire1', questions : [1,2,3] },
+        { id : 2, titre : 'questionnaire2', questions : [4,5,6] },
       ],
       questions = [
-        {  1 : 'question1'  },
-        {  2 : 'question2'  },
-        {  3 : 'question3'  },
-        {  4 : 'question4'  },
-        {  5 : 'question5'  },
-        {  6 : 'question6'  }
+        {  id : 1, texte : 'question1'  },
+        {  id : 2, texte : 'question2'  },
+        {  id : 3, texte : 'question3'  },
+        {  id : 4, texte : 'question4'  },
+        {  id : 5, texte : 'question5'  },
+        {  id : 6, texte : 'question6'  }
       ]
     ]
   },
