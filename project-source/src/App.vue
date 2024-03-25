@@ -1,68 +1,75 @@
 <script>
 // Options API
 
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import Questionnaire from './components/Questionnaire.vue'
 
 export default {
   data() {
-    return [
-      questionnaires = [
-        {  'questionnaire1' : [1,2,3]  },
-        {  'questionnaire2' : [4,5,6]  }
+    return {
+      questionnaires : [
+        {  id : 1 , titre : 'questionnaire1' , questions : [1,2,3]  },
+        {  id : 2 , titre : 'questionnaire2' , questions : [4,5,6]  }
       ],
-      questions = [
-        {  1 : 'question1'  },
-        {  2 : 'question2'  },
-        {  3 : 'question3'  },
-        {  4 : 'question4'  },
-        {  5 : 'question5'  },
-        {  6 : 'question6'  }
+      questions : [
+        {  id : 1 , texte : 'question1'  },
+        {  id : 2 , texte : 'question2'  },
+        {  id : 3 , texte : 'question3'  },
+        {  id : 4 , texte : 'question4'  },
+        {  id : 5 , texte : 'question5'  },
+        {  id : 6 , texte : 'question6'  }
       ]
-    ]
-  }
+    }
+  },
+  components : { Questionnaire }
 }
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <h1>test</h1>
+  <table>
+    <tr>
+      <th> id </th>
+      <th> titre </th>
+      <th> nombre question </th>
+      <th> sup/modif </th>
+    </tr>
+    <Questionnaire v-for=" questionnaire of questionnaires" :questionnaire="questionnaire"></Questionnaire>
+  </table>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+h1 {
+  text-align: center;
+  color: #333;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+table, th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+tr:hover {
+  background-color: #ddd;
+}
+
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #4CAF50;
+  color: white;
+}
+
+th,td,tr{
+  border: 1px solid rgb(160 160 160);
 }
 </style>
