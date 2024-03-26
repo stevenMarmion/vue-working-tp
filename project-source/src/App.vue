@@ -25,7 +25,8 @@ export default {
       this.questionnaires.push(questionnaire);
     },
     supprimer_questionnaire : function(id_questionnaire) {
-      delete this.questionnaire[id_questionnaire];
+      console.log('on supprime le questionnaire avec id : ', id_questionnaire)
+      delete this.questionnaires[id_questionnaire-1];
     },
     modifier_questionnaire : function(questionnaire) {
       console.log('on modifie avec ', questionnaire)
@@ -56,7 +57,8 @@ export default {
     </tr>
     <Questionnaire 
       v-for=" questionnaire of questionnaires" 
-      :questionnaire="questionnaire">
+      :questionnaire="questionnaire"
+      @supprimer="supprimer_questionnaire">
     </Questionnaire>
   </table>
 </template>

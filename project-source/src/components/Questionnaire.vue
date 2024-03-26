@@ -13,7 +13,7 @@ export default {
     },
     methods : {
       supprimer : function() {
-        this.$emit('supprimer', { questionnaire : questionnaire['id'] })
+        this.$emit('supprimer', { id_questionnaire : this.questionnaire['id'] })
       },
       open_modal : function() {
         this.show_modal = true;
@@ -26,7 +26,8 @@ export default {
         this.show_modal = false;
       },
     },
-    components: {QuestionnaireUpdate}
+    components: {QuestionnaireUpdate},
+    emits: ['supprimer']
 }
 </script>
 
