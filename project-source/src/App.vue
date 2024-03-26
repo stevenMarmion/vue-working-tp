@@ -2,25 +2,48 @@
 // Options API
 
 import Questionnaire from './components/Questionnaire.vue'
+import QuestionnaireUpdate from './components/QuestionnaireUpdate.vue';
 
 export default {
   data() {
     return {
       questionnaires : [
-        {  id : 1 , titre : 'questionnaire1' , questions : [1,2,3]  },
-        {  id : 2 , titre : 'questionnaire2' , questions : [4,5,6]  }
+        { id : 1, titre : 'questionnaire1', questions : [1,2,3] },
+        { id : 2, titre : 'questionnaire2', questions : [4,5,6] },
       ],
       questions : [
-        {  id : 1 , texte : 'question1'  },
-        {  id : 2 , texte : 'question2'  },
-        {  id : 3 , texte : 'question3'  },
-        {  id : 4 , texte : 'question4'  },
-        {  id : 5 , texte : 'question5'  },
-        {  id : 6 , texte : 'question6'  }
+        {  id : 1, texte : 'question1'  },
+        {  id : 2, texte : 'question2'  },
+        {  id : 3, texte : 'question3'  },
+        {  id : 4, texte : 'question4'  },
+        {  id : 5, texte : 'question5'  },
+        {  id : 6, texte : 'question6'  }
       ]
     }
   },
-  components : { Questionnaire }
+  methods : {
+    ajouter_questionnaire : function(questionnaire) {
+      this.questionnaires.push(questionnaire);
+    },
+    supprimer_questionnaire : function(id_questionnaire) {
+      delete this.questionnaire[id_questionnaire];
+    },
+    modifier_questionnaire : function(questionnaire) {
+      console.log('on modifie avec ', questionnaire)
+      this.questionnaires[questionnaire['id']-1] = questionnaire;
+    },
+    ajouter_question : function(question) {
+      this.questions.push(question);
+    },
+    supprimer_question : function(id_question) {
+      delete this.questions[id_question];
+    },
+    modifier_question : function(question) {
+      this.questions[question['id']-1] = question;
+    },
+    close : function() { console.log('on close') }
+  },
+  components: {QuestionnaireUpdate, Questionnaire}
 }
 </script>
 
@@ -35,6 +58,18 @@ export default {
     </tr>
     <Questionnaire v-for=" questionnaire of questionnaires" :questionnaire="questionnaire"></Questionnaire>
   </table>
+  <header>
+    <h1>On modifie question</h1>
+  </header>
+
+  <main>
+    <QuestionnaireUpdate 
+      v-for="ques of questionnaires" 
+      :questionnaire = "ques"
+      @valide-custom="modifier_questionnaire"
+      @close-custom="close">
+    </QuestionnaireUpdate>
+  </main>
 </template>
 
 <style scoped>
