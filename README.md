@@ -5,6 +5,10 @@
 - MARMION Steven
 - SIMON Gael
 
+## Branche
+
+- develop, branche de versionnage du développement
+
 ## Lancement
 
 ```bash
