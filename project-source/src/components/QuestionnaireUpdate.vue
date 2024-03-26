@@ -6,10 +6,10 @@ export default {
     },
     methods: {
         valider : function() {
-            this.$emits('valide-custom', { questionnaire : this.questionnaire})
+            this.$emit('valide-custom', { questionnaire : this.questionnaire })
         },
         fermer : function() {
-            this.$emits('close-custom', { questionnaire : this.questionnaire})
+            this.$emit('close-custom', { questionnaire : this.questionnaire })
         }
     },
     emits : ['valide-custom', 'close-custom']

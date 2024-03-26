@@ -27,12 +27,20 @@ export default {
     supprimer_questionnaire : function(id_questionnaire) {
       delete this.questionnaire[id_questionnaire];
     },
+    modifier_questionnaire : function(questionnaire) {
+      console.log('on modifie avec ', questionnaire)
+      this.questionnaires[questionnaire['id']-1] = questionnaire;
+    },
     ajouter_question : function(question) {
       this.questions.push(question);
     },
     supprimer_question : function(id_question) {
       delete this.questions[id_question];
     },
+    modifier_question : function(question) {
+      this.questions[question['id']-1] = question;
+    },
+    close : function() { console.log('on close') }
   },
   components: {QuestionnaireUpdate}
 }
@@ -44,7 +52,12 @@ export default {
   </header>
 
   <main>
-    <QuestionnaireUpdate v-for="ques of questionnaires" :questionnaire = "ques"></QuestionnaireUpdate>
+    <QuestionnaireUpdate 
+      v-for="ques of questionnaires" 
+      :questionnaire = "ques"
+      @valide-custom="modifier_questionnaire"
+      @close-custom="close">
+    </QuestionnaireUpdate>
   </main>
 </template>
 
