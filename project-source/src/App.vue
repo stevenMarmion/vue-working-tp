@@ -1,6 +1,7 @@
 <script>
 // Options API
 
+import Questionnaire from './components/Questionnaire.vue'
 import QuestionnaireUpdate from './components/QuestionnaireUpdate.vue';
 
 export default {
@@ -42,11 +43,21 @@ export default {
     },
     close : function() { console.log('on close') }
   },
-  components: {QuestionnaireUpdate}
+  components: {QuestionnaireUpdate, Questionnaire}
 }
 </script>
 
 <template>
+  <h1>test</h1>
+  <table>
+    <tr>
+      <th> id </th>
+      <th> titre </th>
+      <th> nombre question </th>
+      <th> sup/modif </th>
+    </tr>
+    <Questionnaire v-for=" questionnaire of questionnaires" :questionnaire="questionnaire"></Questionnaire>
+  </table>
   <header>
     <h1>On modifie question</h1>
   </header>
@@ -62,30 +73,38 @@ export default {
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
+h1 {
+  text-align: center;
+  color: #333;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+table, th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+tr:hover {
+  background-color: #ddd;
+}
+
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #4CAF50;
+  color: white;
+}
+
+th,td,tr{
+  border: 1px solid rgb(160 160 160);
 }
 </style>
