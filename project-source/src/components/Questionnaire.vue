@@ -1,9 +1,33 @@
 <script>
-    export default{
-        props: {
-            questionnaire : Object
-        }
-    }
+
+import QuestionnaireUpdate from '@/components/QuestionnaireUpdate.vue';
+
+export default {
+    data() {
+      return {
+        show_modal : false,
+      }
+    },
+    props: {
+        questionnaire : Object
+    },
+    methods : {
+      supprimer : function() {
+        this.$emit('supprimer', { questionnaire : questionnaire['id'] })
+      },
+      open_modal : function() {
+        this.show_modal = true;
+      },
+      modifier_questionnaire : function(questionnaire) {
+        console.log('on modifie avec ', questionnaire)
+        this.questionnaire = questionnaire;
+      },
+      close : function() { 
+        this.show_modal = false;
+      },
+    },
+    components: {QuestionnaireUpdate}
+}
 </script>
 
 <template>
@@ -11,8 +35,14 @@
     <td> {{ questionnaire.id }} </td>
     <td> <a href="">{{ questionnaire.titre }}</a></td>
     <td> il y a {{ questionnaire.questions.length }} question</td>
-    <td> <button>❌</button> <button>🖌️</button> </td>
+    <td> <button @click="supprimer">❌</button> <button @click="open_modal">🖌️</button> </td>
   </tr>
+
+  <QuestionnaireUpdate v-if="show_modal"
+      :questionnaire="questionnaire"
+      @valide-custom="modifier_questionnaire"
+      @close-custom="close">
+    </QuestionnaireUpdate>
 </template>
 
 <style scoped>

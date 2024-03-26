@@ -1,8 +1,7 @@
 <script>
 // Options API
 
-import Questionnaire from './components/Questionnaire.vue'
-import QuestionnaireUpdate from './components/QuestionnaireUpdate.vue';
+import Questionnaire from './components/Questionnaire.vue';
 
 export default {
   data() {
@@ -18,7 +17,7 @@ export default {
         {  id : 4, texte : 'question4'  },
         {  id : 5, texte : 'question5'  },
         {  id : 6, texte : 'question6'  }
-      ]
+      ],
     }
   },
   methods : {
@@ -41,9 +40,8 @@ export default {
     modifier_question : function(question) {
       this.questions[question['id']-1] = question;
     },
-    close : function() { console.log('on close') }
   },
-  components: {QuestionnaireUpdate, Questionnaire}
+  components: {Questionnaire}
 }
 </script>
 
@@ -56,20 +54,11 @@ export default {
       <th> nombre question </th>
       <th> sup/modif </th>
     </tr>
-    <Questionnaire v-for=" questionnaire of questionnaires" :questionnaire="questionnaire"></Questionnaire>
+    <Questionnaire 
+      v-for=" questionnaire of questionnaires" 
+      :questionnaire="questionnaire">
+    </Questionnaire>
   </table>
-  <header>
-    <h1>On modifie question</h1>
-  </header>
-
-  <main>
-    <QuestionnaireUpdate 
-      v-for="ques of questionnaires" 
-      :questionnaire = "ques"
-      @valide-custom="modifier_questionnaire"
-      @close-custom="close">
-    </QuestionnaireUpdate>
-  </main>
 </template>
 
 <style scoped>
