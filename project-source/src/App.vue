@@ -11,12 +11,12 @@ export default {
         { id : 2, titre : 'questionnaire2', questions : [4,5,6] },
       ],
       questions : [
-        {  id : 1, texte : 'question1'  },
-        {  id : 2, texte : 'question2'  },
-        {  id : 3, texte : 'question3'  },
-        {  id : 4, texte : 'question4'  },
-        {  id : 5, texte : 'question5'  },
-        {  id : 6, texte : 'question6'  }
+        { id : 1, texte : 'question1', id_questionnaire: 1 },
+        { id : 2, texte : 'question2', id_questionnaire: 2 },
+        { id : 3, texte : 'question3', id_questionnaire: 3 },
+        { id : 4, texte : 'question4', id_questionnaire: 4 },
+        { id : 5, texte : 'question5', id_questionnaire: 5 },
+        { id : 6, texte : 'question6', id_questionnaire: 6 }
       ],
     }
   },
@@ -26,11 +26,11 @@ export default {
     },
     supprimer_questionnaire : function(id_questionnaire) {
       console.log('on supprime le questionnaire avec id : ', id_questionnaire)
-      delete this.questionnaires[id_questionnaire-1];
+      delete this.questionnaires[id_questionnaire];
     },
     modifier_questionnaire : function(questionnaire) {
       console.log('on modifie avec ', questionnaire)
-      this.questionnaires[questionnaire['id']-1] = questionnaire;
+      this.questionnaires[questionnaire['id']] = questionnaire;
     },
     ajouter_question : function(question) {
       this.questions.push(question);
@@ -39,8 +39,16 @@ export default {
       delete this.questions[id_question];
     },
     modifier_question : function(question) {
-      this.questions[question['id']-1] = question;
+      this.questions[question['id']] = question;
     },
+    supprimer_question_questionnaire : function(id_question, id_questionnaire) {
+      let index_question = this.questionnaire[id_questionnaire]['questions'].indexOf(id_question);
+      if (index_question !== -1) {
+        delete this.questionnaire[id_questionnaire]['questions'][index_question];
+      } else {
+        console.log('cette question n\'existe pas');
+      }
+    }
   },
   components: {Questionnaire}
 }
@@ -56,9 +64,10 @@ export default {
       <th> sup/modif </th>
     </tr>
     <Questionnaire 
-      v-for=" questionnaire of questionnaires" 
+      v-for="questionnaire of questionnaires" 
       :questionnaire="questionnaire"
-      @supprimer="supprimer_questionnaire">
+      @supprimer="supprimer_questionnaire"
+      @supprimer_question_questionnaire="supprimer_question_questionnaire">
     </Questionnaire>
   </table>
 </template>

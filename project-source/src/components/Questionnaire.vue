@@ -11,6 +11,9 @@ export default {
     props: {
         questionnaire : Object
     },
+    created() {
+      console.log(this.questionnaire)
+    },
     methods : {
       supprimer : function() {
         this.$emit('supprimer', { id_questionnaire : this.questionnaire['id'] })
@@ -25,9 +28,12 @@ export default {
       close : function() { 
         this.show_modal = false;
       },
+      supprimer_question_questionnaire : function(id_question, id_questionnaire) {
+        this.$emit('supprimer_question_questionnaire', { id_question: id_question, id_questionnaire : id_questionnaire })
+      },
     },
     components: {QuestionnaireUpdate},
-    emits: ['supprimer']
+    emits: ['supprimer', 'supprimer_question_questionnaire']
 }
 </script>
 
@@ -42,7 +48,8 @@ export default {
   <QuestionnaireUpdate v-if="show_modal"
       :questionnaire="questionnaire"
       @valide-custom="modifier_questionnaire"
-      @close-custom="close">
+      @close-custom="close"
+      @supprimer-question="supprimer_question_questionnaire">
     </QuestionnaireUpdate>
 </template>
 
