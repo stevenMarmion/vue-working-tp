@@ -1,75 +1,111 @@
 <script>
 // Options API
 
+import { get_all_questionnaires, 
+         get_all_questions, 
+         update_questionnaire, 
+         update_question,
+         delete_question,
+         delete_questionnaire
+} from './rest.js';
+
 import Questionnaire from './components/Questionnaire.vue';
+import Question from './components/Question.vue';
 
 export default {
   data() {
     return {
-      questionnaires : [
-        { id : 1, titre : 'questionnaire1', questions : [1,2,3] },
-        { id : 2, titre : 'questionnaire2', questions : [4,5,6] },
-      ],
-      questions : [
-        { id : 1, texte : 'question1', id_questionnaire: 1 },
-        { id : 2, texte : 'question2', id_questionnaire: 2 },
-        { id : 3, texte : 'question3', id_questionnaire: 3 },
-        { id : 4, texte : 'question4', id_questionnaire: 4 },
-        { id : 5, texte : 'question5', id_questionnaire: 5 },
-        { id : 6, texte : 'question6', id_questionnaire: 6 }
-      ],
+      show_questionnaire : false,
+      show_question : false
     }
   },
   methods : {
-    ajouter_questionnaire : function(questionnaire) {
-      this.questionnaires.push(questionnaire);
+    turn_true_show_questionnaire : function() {
+      this.show_questionnaire = true;
     },
-    supprimer_questionnaire : function(id_questionnaire) {
-      console.log('on supprime le questionnaire avec id : ', id_questionnaire)
-      delete this.questionnaires[id_questionnaire];
+    turn_false_show_questionnaire : function() {
+      this.show_questionnaire = false;
     },
-    modifier_questionnaire : function(questionnaire) {
-      console.log('on modifie avec ', questionnaire)
-      this.questionnaires[questionnaire['id']] = questionnaire;
+    turn_true_show_question : function() {
+      this.show_question = true;
     },
-    ajouter_question : function(question) {
-      this.questions.push(question);
+    turn_false_show_question : function() {
+      this.show_question = false;
     },
-    supprimer_question : function(id_question) {
-      delete this.questions[id_question];
+    questionnaires : async function() {
+      await get_all_questionnaires();
     },
-    modifier_question : function(question) {
-      this.questions[question['id']] = question;
+    questions : async function() {
+      await get_all_questions();
     },
-    supprimer_question_questionnaire : function(id_question, id_questionnaire) {
-      let index_question = this.questionnaire[id_questionnaire]['questions'].indexOf(id_question);
-      if (index_question !== -1) {
-        delete this.questionnaire[id_questionnaire]['questions'][index_question];
-      } else {
-        console.log('cette question n\'existe pas');
-      }
-    }
+    modifier_questionnaire : async function(questionnaireId, newName) {
+      await update_questionnaire(
+        questionnaireId,
+        newName
+      )
+    },
+    modifier_question : async function(questionId, newTitle, newQuestionnaireId) {
+      await update_question (
+        questionId, 
+        newTitle, 
+        newQuestionnaireId
+      )
+    },
+    supprimer_questionnaire : async function(questionnaireId) {
+      await delete_questionnaire(
+        questionnaireId,
+      )
+    },
+    delete_question : async function(questionId) {
+      await delete_question (
+        questionId, 
+      )
+    },
   },
-  components: {Questionnaire}
+  components: {Questionnaire, Question}
 }
 </script>
 
 <template>
-  <h1>test</h1>
-  <table>
-    <tr>
-      <th> id </th>
-      <th> titre </th>
-      <th> nombre question </th>
-      <th> sup/modif </th>
-    </tr>
-    <Questionnaire 
-      v-for="questionnaire of questionnaires" 
-      :questionnaire="questionnaire"
-      @supprimer="supprimer_questionnaire"
-      @supprimer_question_questionnaire="supprimer_question_questionnaire">
-    </Questionnaire>
-  </table>
+  <section>
+    <h1>Bienvenue sur la visualisation des questionnaires</h1>
+    <div>
+      <button @click="questionnaires, turn_false_show_question, turn_true_show_questionnaire">Voir les questionnaires</button>
+    </div>
+    <div>
+      <button @click="questions, turn_false_show_questionnaire, turn_true_show_question">Voir les questions</button>
+    </div>
+    <table v-if="show_questionnaire">
+      <tr>
+        <th> ID </th>
+        <th> Titre </th>
+        <th> Nombre question(s) </th>
+        <th> Supp/Modif </th>
+      </tr>
+      <Questionnaire
+        v-for="questionnaire of localStorage.questionnaires"
+        :key="questionnaire.id"
+        :questionnaire="questionnaire"
+        @supprimer="supprimer_questionnaire"
+        @modifier_questionnaire="modifier_questionnaire">
+      </Questionnaire>
+    </table>
+    <table v-if="show_question">
+      <tr>
+        <th> ID </th>
+        <th> Titre </th>
+        <th> Supp/Modif </th>
+      </tr>
+      <Question
+        v-for="question of localStorage.questions"
+        :key="question.id"
+        :question="question"
+        @supprimer="supprimer_question"
+        @supprimer_question_question="supprimer_question_question"
+        @modifier_question="modifier_question">
+      </Question>
+    </table>
+  </section>
 </template>
 
 <style scoped>

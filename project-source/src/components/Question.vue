@@ -1,15 +1,20 @@
 <script>
-    export default{
-        props: {
-            question : Object
-        }
+
+export default{
+    name: 'QuestionRows',
+    props: {
+        question : Object
+    },
+    methods: {
+
     }
+}
 </script>
 
 <template>
   <tr>
     <td> {{ question.id }} </td>
-    <td> {{ question.texte }}</td>
+    <td> {{ question.title }}</td>
     <td> <button>❌</button> <button>🖌️</button> </td>
   </tr>
 </template>
