@@ -101,7 +101,6 @@ export default {
         :key="question.id"
         :question="question"
         @supprimer="supprimer_question"
-        @supprimer_question_question="supprimer_question_question"
         @modifier_question="modifier_question">
       </Question>
     </table>
