@@ -8,6 +8,7 @@ export default {
     },
     methods: {
         valider : function() {
+          console.log(this.questionnaire)
             this.$emit('valide-custom', { questionnaire : this.questionnaire })
         },
         fermer : function() {
@@ -22,18 +23,18 @@ export default {
 <template>
   <div class="popup-container">
     <div class="popup-content">
-      <h1>{{ questionnaire.titre }}</h1>
+      <h1>Modification de {{ questionnaire.name }}</h1>
       <div>
         <label :for="questionnaire.id">ID :</label>
-        <input type="text" v-bind:value="questionnaire.id" disabled/>
+        <input type="text" v-model="questionnaire.id" disabled/>
       </div>
       <div>
-        <label :for="questionnaire.titre">Titre :</label>
-        <input type="text" v-bind:value="questionnaire.titre"/>
+        <label :for="questionnaire.name">Titre :</label>
+        <input type="text" v-model="questionnaire.name"/>
       </div>
       <div v-for="(question, index) in questionnaire.questions" :key="index">
         <label :for="'question_' + index">Titre question :</label>
-        <input type="text" :id="'question_' + index" v-bind:value="questionnaire.questions[index]">
+        <input type="text" :id="'question_' + index" v-model="questionnaire.questions[index].title">
       </div>
       <div class="popup-buttons">
         <button @click="valider">Valider</button>

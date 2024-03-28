@@ -104,7 +104,7 @@ def db_delete_questionnaire(questionnaire_id):
         abort(404)
     db.session.delete(questionnaire)
     db.session.commit()
-    return "Questionnaire supprimé avec succès"
+    return "Questionnaire supprimé avec succès", True
 
 def db_delete_question(question_id):
     question = Question.query.get(question_id)
@@ -112,4 +112,4 @@ def db_delete_question(question_id):
         abort(404)
     db.session.delete(question)
     db.session.commit()
-    return "Question supprimée avec succès"
+    return "Question supprimée avec succès", True

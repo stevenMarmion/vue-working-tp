@@ -9,39 +9,50 @@ const API_URL = 'http://localhost:5000'
 
 export async function get_all_questionnaires() {
     const rep = await fetch(API_URL + "/questionnaire/api/v1.0/questionnaires", {
-        "method" : "GET"
+        "method" : "GET",
+        "headers" : {
+            "Access-Control-Allow-Origin": '*'
+        },
     });
-    console.log(rep)
     const json = await rep.json();
     console.log(json);
-    setLocalStorage('questionnaires', json);
+    return json;
 }
 
 export async function get_all_questions() {
     const rep = await fetch(API_URL + "/questionnaire/api/v1.0/questions", {
-        "method" : "GET"
+        "method" : "GET",
+        "headers" : {
+            "Access-Control-Allow-Origin": "*"
+        }
     });
     const json = await rep.json();
     console.log(json);
-    setLocalStorage('questions', json);
+    return json;
 }
 
 export async function get_questionnaire(questionnaire_id) {
     const rep = await fetch(API_URL + `/questionnaire/api/v1.0/questionnaires/${questionnaire_id}`, {
-        "method" : "GET"
+        "method" : "GET",
+        "headers" : {
+            "Access-Control-Allow-Origin": "*"
+        }
     });
     const json = await rep.json();
     console.log(json);
-    setLocalStorage(`questionnaire/${questionnaire_id}`, json);
+    return json;
 }
 
 export async function get_question(question_id) {
     const rep = await fetch(API_URL + `/questionnaire/api/v1.0/question/${question_id}`, {
-        "method" : "GET"
+        "method" : "GET",
+        "headers" : {
+            "Access-Control-Allow-Origin": "*"
+        }
     });
     const json = await rep.json();
     console.log(json);
-    setLocalStorage(`question/${question_id}`, json);
+    return json;
 }
 
 // ================== POST ==================
@@ -51,7 +62,8 @@ export async function create_questionnaire(jsonDatas) {
         {
             "method" : "POST",
             "headers" : {
-                "Content-type" : "application/json"
+                "Content-type" : "application/json",
+                "Access-Control-Allow-Origin": "*",
             },
             "body" : JSON.stringify(jsonDatas)
         }
@@ -65,7 +77,8 @@ export async function create_question(jsonDatas) {
         {
             "method" : "POST",
             "headers" : {
-                "Content-type" : "application/json"
+                "Content-type" : "application/json",
+                "Access-Control-Allow-Origin": "*"
             },
             "body" : JSON.stringify(jsonDatas)
         }
@@ -97,7 +110,8 @@ export async function update_questionnaire(questionnaireId, newName) {
     const rep = await fetch(API_URL + `/questionnaire/api/v1.0/questionnaires/${questionnaireId}`, {
         "method": 'PUT',
         "headers": {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*"
         },
         "body": JSON.stringify({ name: newName })
     });
@@ -109,7 +123,8 @@ export async function update_question(questionId, newTitle, newQuestionnaireId) 
     const rep = await fetch(API_URL + `/questionnaire/api/v1.0/questions/${questionId}`, {
         "method": 'PUT',
         "headers": {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Access-Control-Allow-Origin": "*"
         },
         "body": JSON.stringify({
             title: newTitle,
@@ -129,19 +144,23 @@ export async function delete_questionnaire(questionnaireId) {
     }
     const rep = await fetch(API_URL + `/questionnaire/api/v1.0/questionnaires/${questionnaireId}`, {
         "method": 'DELETE',
+        "headers" : {
+            "Access-Control-Allow-Origin": "*"
+        }
     });
     const json = await rep.json();
     console.log(json);
+    return json
 }
 
 export async function delete_question(questionId) {
     const rep = await fetch(API_URL + `/questionnaire/api/v1.0/questions/${questionId}`, {
         "method": 'DELETE',
+        "headers" : {
+            "Access-Control-Allow-Origin": "*"
+        }
     });
     const json = await rep.json();
     console.log(json);
-}
-
-function setLocalStorage(key, datas) {
-    localStorage.setItem(key, JSON.stringify(datas));
+    return json
 }

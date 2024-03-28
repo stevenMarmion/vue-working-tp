@@ -16,7 +16,8 @@ export default {
   data() {
     return {
       show_questionnaire : false,
-      show_question : false
+      show_question : false,
+      cache: {}
     }
   },
   methods : {
@@ -33,34 +34,52 @@ export default {
       this.show_question = false;
     },
     questionnaires : async function() {
-      await get_all_questionnaires();
+      this.cache['questionnaires'] = await get_all_questionnaires();
+      this.turn_false_show_question();
+      this.turn_true_show_questionnaire();
     },
     questions : async function() {
-      await get_all_questions();
+      this.cache['questions'] = await get_all_questions();
+      this.turn_false_show_questionnaire();
+      this.turn_true_show_question();
     },
-    modifier_questionnaire : async function(questionnaireId, newName) {
-      await update_questionnaire(
-        questionnaireId,
-        newName
+    modifier_questionnaire : async function(questionnaire) {
+      this.cache['questionnaires'][questionnaireId] = await update_questionnaire(
+        questionnaire.questionnaireId,
+        questionnaire.newName
       )
     },
     modifier_question : async function(questionId, newTitle, newQuestionnaireId) {
-      await update_question (
+      this.cache['questions'][questionId] = await update_question (
         questionId, 
         newTitle, 
         newQuestionnaireId
       )
     },
     supprimer_questionnaire : async function(questionnaireId) {
-      await delete_questionnaire(
-        questionnaireId,
+      const rep = await delete_questionnaire(
+        questionnaireId.id_questionnaire,
       )
+      console.log(this.cache['questionnaires'])
+      if (rep['valid']) {
+        delete this.cache['questionnaires'][questionnaireId.id_questionnaire]
+      }
     },
-    delete_question : async function(questionId) {
-      await delete_question (
-        questionId, 
+    supprimer_question : async function(questionId) {
+      const rep = await delete_question (
+        questionId.id_question, 
       )
+      if (rep['valid']) {
+        delete this.cache['questions'][questionId.id_question]
+      }
     },
+  },
+  computed : {
+    titleComputed() {
+      return this.show_questionnaire ? 
+          'Les questionnaires' : this.show_question ? 
+              'Les questions' : '' 
+    }
   },
   components: {Questionnaire, Question}
 }
@@ -69,12 +88,15 @@ export default {
 <template>
   <section>
     <h1>Bienvenue sur la visualisation des questionnaires</h1>
-    <div>
-      <button @click="questionnaires, turn_false_show_question, turn_true_show_questionnaire">Voir les questionnaires</button>
-    </div>
-    <div>
-      <button @click="questions, turn_false_show_questionnaire, turn_true_show_question">Voir les questions</button>
-    </div>
+    <section class="flex" style="margin-bottom: 1em;">
+      <div>
+        <button @click="questionnaires">Voir les questionnaires</button>
+      </div>
+      <div style="margin-left: 1em;">
+        <button @click="questions">Voir les questions</button>
+      </div>
+    </section>
+    <h1>{{ titleComputed }}</h1>
     <table v-if="show_questionnaire">
       <tr>
         <th> ID </th>
@@ -83,7 +105,7 @@ export default {
         <th> Supp/Modif </th>
       </tr>
       <Questionnaire
-        v-for="questionnaire of localStorage.questionnaires"
+        v-for="questionnaire of cache['questionnaires']"
         :key="questionnaire.id"
         :questionnaire="questionnaire"
         @supprimer="supprimer_questionnaire"
@@ -97,7 +119,7 @@ export default {
         <th> Supp/Modif </th>
       </tr>
       <Question
-        v-for="question of localStorage.questions"
+        v-for="question of cache['questions']"
         :key="question.id"
         :question="question"
         @supprimer="supprimer_question"
@@ -106,40 +128,3 @@ export default {
     </table>
   </section>
 </template>
-
-<style scoped>
-h1 {
-  text-align: center;
-  color: #333;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-table, th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-tr:hover {
-  background-color: #ddd;
-}
-
-th {
-  padding-top: 12px;
-  padding-bottom: 12px;
-  text-align: center;
-  background-color: #4CAF50;
-  color: white;
-}
-
-th,td,tr{
-  border: 1px solid rgb(160 160 160);
-}
-</style>

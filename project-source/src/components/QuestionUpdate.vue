@@ -22,14 +22,14 @@ export default {
 <template>
   <div class="popup-container">
     <div class="popup-content">
-      <h1>{{ question.titre }}</h1>
+      <h1>Modification de {{ question.title }}</h1>
       <div>
         <label :for="question.id">ID :</label>
-        <input type="text" v-bind:value="question.id" disabled/>
+        <input type="text" v-model="question.id" disabled/>
       </div>
       <div>
-        <label :for="question.titre">Titre :</label>
-        <input type="text" v-bind:value="question.titre"/>
+        <label :for="question.title">Titre :</label>
+        <input type="text" v-model="question.title"/>
       </div>
       <div class="popup-buttons">
         <button @click="valider">Valider</button>

@@ -37,8 +37,6 @@ export default {
 </script>
 
 <template>
-  <section>
-    <slot>Aucune données apparente</slot>
     <tr>
       <td> {{ questionnaire.id }} </td>
       <td> <a href="">{{ questionnaire.name }}</a></td>
@@ -51,38 +49,4 @@ export default {
       @valide-custom="modifier_questionnaire"
       @close-custom="close">
     </QuestionnaireUpdate>
-  </section>
 </template>
-
-<style scoped>
-tr {
-  border: 1px solid #ddd;
-  padding: 8px;
-}
-
-tr:hover {background-color: #ddd;}
-
-td {
-  text-align: center;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-
-button {
-  margin: 5px;
-  padding: 5px 10px;
-  font-size: 16px;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #ddd;
-}
-
-th,td,tr{
-  border: 1px solid rgb(160 160 160);
-  padding: 8px 10px;
-
-}
-</style>
