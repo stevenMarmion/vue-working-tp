@@ -3,6 +3,8 @@
 
 import { get_all_questionnaires, 
          get_all_questions, 
+         create_questionnaire,
+         create_question,
          update_questionnaire, 
          update_question,
          delete_question,
@@ -11,14 +13,21 @@ import { get_all_questionnaires,
 
 import Questionnaire from './components/Questionnaire.vue';
 import Question from './components/Question.vue';
+import QuestionnaireAdd from './components/QuestionnaireAdd.vue';
+import QuestionAdd from './components/QuestionAdd.vue';
 
 export default {
   data() {
     return {
-      show_questionnaire : false,
-      show_question : false,
-      cache: {}
-    }
+      show_questionnaire: false,
+      show_question: false,
+      show_questionnaire_add: false,
+      show_question_add: false,
+      cache: {
+        questionnaires: new Map(),
+        questions: new Map()
+      }
+    };
   },
   methods : {
     turn_true_show_questionnaire : function() {
@@ -33,6 +42,27 @@ export default {
     turn_false_show_question : function() {
       this.show_question = false;
     },
+    turn_true_show_questionnaire_add : function() {
+      this.show_questionnaire_add = true;
+    },
+    turn_false_show_questionnaire_add : function() {
+      this.show_questionnaire_add = false;
+    },
+    turn_true_show_question_add : function() {
+      this.show_question_add = true;
+    },
+    turn_false_show_question_add : function() {
+      this.show_question_add = false;
+    },
+    show_add_popups : function() {
+      if (this.show_questionnaire) {
+        this.turn_false_show_questionnaire_add();
+        this.turn_true_show_questionnaire_add();
+      } else if (this.show_question) {
+        this.turn_false_show_questionnaire_add();
+        this.turn_true_show_question_add();
+      }
+    },
     questionnaires : async function() {
       this.cache['questionnaires'] = await get_all_questionnaires();
       this.turn_false_show_question();
@@ -43,34 +73,55 @@ export default {
       this.turn_false_show_questionnaire();
       this.turn_true_show_question();
     },
+    ajouter_questionnaire: async function(name) {
+      const rep = await create_questionnaire(name);
+      if (typeof rep === 'object' && rep !== null) {
+        this.cache['questionnaires'].push(rep);
+      }
+    },
+    ajouter_question: async function(title, questionaire_id) {
+      const rep = await create_question(title, questionaire_id);
+      if (typeof rep === 'object' && rep !== null) {
+        this.cache['questions'].push(rep);
+      }
+    },
     modifier_questionnaire : async function(questionnaire) {
-      this.cache['questionnaires'][questionnaireId] = await update_questionnaire(
+      this.cache['questionnaires'][questionnaire.questionnaireId] = await update_questionnaire(
         questionnaire.questionnaireId,
         questionnaire.newName
-      )
+      );
     },
     modifier_question : async function(questionId, newTitle, newQuestionnaireId) {
       this.cache['questions'][questionId] = await update_question (
         questionId, 
         newTitle, 
         newQuestionnaireId
-      )
+      );
     },
     supprimer_questionnaire : async function(questionnaireId) {
       const rep = await delete_questionnaire(
         questionnaireId.id_questionnaire,
-      )
-      console.log(this.cache['questionnaires'])
+      );
       if (rep['valid']) {
-        delete this.cache['questionnaires'][questionnaireId.id_questionnaire]
+        for (let i = 0 ; i < this.cache['questionnaires'].length ; i++) {
+          if (this.cache['questionnaires'][i].id == questionnaireId.id_questionnaire) {
+            this.cache['questionnaires'].splice(i, 1);
+            break;
+          }
+        }
       }
     },
     supprimer_question : async function(questionId) {
       const rep = await delete_question (
         questionId.id_question, 
-      )
+      );
       if (rep['valid']) {
-        delete this.cache['questions'][questionId.id_question]
+        for (let i = 0 ; i < this.cache['questions'].length ; i++) {
+          if (this.cache['questions'][i].id == questionId.id_question) {
+            this.cache['questions'].splice(i, 1);
+            break;
+          }
+        }
       }
     },
   },
@@ -78,10 +129,15 @@ export default {
     titleComputed() {
       return this.show_questionnaire ? 
           'Les questionnaires' : this.show_question ? 
-              'Les questions' : '' 
-    }
+              'Les questions' : ''
+    },
+    buttonAddComputed() {
+      return this.show_questionnaire ? 
+          'Ajouter un questionnaire' : this.show_question ? 
+              'Ajouter une question' : ''
+    },
   },
-  components: {Questionnaire, Question}
+  components: {Questionnaire, Question, QuestionnaireAdd, QuestionAdd}
 }
 </script>
 
@@ -97,34 +153,53 @@ export default {
       </div>
     </section>
     <h1>{{ titleComputed }}</h1>
-    <table v-if="show_questionnaire">
-      <tr>
-        <th> ID </th>
-        <th> Titre </th>
-        <th> Nombre question(s) </th>
-        <th> Supp/Modif </th>
-      </tr>
-      <Questionnaire
-        v-for="questionnaire of cache['questionnaires']"
-        :key="questionnaire.id"
-        :questionnaire="questionnaire"
-        @supprimer="supprimer_questionnaire"
-        @modifier_questionnaire="modifier_questionnaire">
-      </Questionnaire>
-    </table>
-    <table v-if="show_question">
-      <tr>
-        <th> ID </th>
-        <th> Titre </th>
-        <th> Supp/Modif </th>
-      </tr>
-      <Question
-        v-for="question of cache['questions']"
-        :key="question.id"
-        :question="question"
-        @supprimer="supprimer_question"
-        @modifier_question="modifier_question">
-      </Question>
-    </table>
+
+    <div>
+      <button @click="show_add_popups">
+        {{ buttonAddComputed }}
+      </button>
+      
+      <QuestionnaireAdd v-if="show_questionnaire_add"
+        @valide-custom="ajouter_questionnaire"
+        @close-custom="turn_false_show_questionnaire_add">
+      </QuestionnaireAdd>
+
+      <table v-if="show_questionnaire">
+        <tr>
+          <th> ID </th>
+          <th> Titre </th>
+          <th> Nombre question(s) </th>
+          <th> Supp/Modif </th>
+        </tr>
+        <Questionnaire
+          v-for="questionnaire of cache['questionnaires']"
+          :key="questionnaire.id"
+          :questionnaire="questionnaire"
+          @supprimer="supprimer_questionnaire"
+          @modifier_questionnaire="modifier_questionnaire">
+        </Questionnaire>
+      </table>
+
+      <table v-if="show_question">
+        <tr>
+          <th> ID </th>
+          <th> Titre </th>
+          <th> Supp/Modif </th>
+        </tr>
+        <Question
+          v-for="question of cache['questions']"
+          :key="question.id"
+          :question="question"
+          @supprimer="supprimer_question"
+          @modifier_question="modifier_question">
+        </Question>
+
+        <QuestionAdd v-if="show_question_add"
+          :questionnaires="cache['questionnaires']"
+          @valide-custom="ajouter_question"
+          @close-custom="turn_false_show_question_add">
+        </QuestionAdd>
+      </table>
+    </div>
   </section>
 </template>
