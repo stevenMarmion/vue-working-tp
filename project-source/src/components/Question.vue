@@ -12,6 +12,9 @@ export default {
     props: {
         question : {
           type : Object
+        },
+        questionnaires : {
+          type : Object
         }
     },
     methods : {
@@ -27,7 +30,8 @@ export default {
       modifier_question : function() {
         this.$emit('modifier_question', { 
           questionId : this.question.id,
-          newTitle : this.question.title
+          newTitle : this.question.title,
+          newQuestionnaireId : this.question.questionnaire_id
         })
       },
     },
@@ -40,11 +44,13 @@ export default {
     <tr>
       <td> {{ question.id }} </td>
       <td> <a href="">{{ question.title }}</a></td>
+      <td> <a href="">{{ question.questionnaire_id }}</a></td>
       <td> <button @click="supprimer">❌</button> <button @click="open_modal">🖌️</button> </td>
     </tr>
 
     <QuestionUpdate v-if="show_modal"
       :question="question"
+      :questionnaires="questionnaires"
       @valide-custom="modifier_question"
       @close-custom="close">
     </QuestionUpdate>

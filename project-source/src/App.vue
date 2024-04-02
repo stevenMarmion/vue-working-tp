@@ -29,6 +29,10 @@ export default {
       }
     };
   },
+  async created() {
+    this.cache['questionnaires'] = await get_all_questionnaires();
+    this.cache['questions'] = await get_all_questions();
+  },
   methods : {
     turn_true_show_questionnaire : function() {
       this.show_questionnaire = true;
@@ -86,17 +90,33 @@ export default {
       }
     },
     modifier_questionnaire : async function(questionnaire) {
-      this.cache['questionnaires'][questionnaire.questionnaireId] = await update_questionnaire(
+      const rep = await update_questionnaire(
         questionnaire.questionnaireId,
         questionnaire.newName
       );
+      if (typeof rep === 'object' && rep !== null) {
+        for (let i = 0 ; i < this.cache['questionnaires'].length ; i++) {
+          if (this.cache['questionnaires'][i].id == questionnaire.questionnaireId.id_questionnaire) {
+            this.cache['questionnaires'][i] = rep;
+          }
+        }
+      }
+      console.log(this.cache['questionnaires']);
     },
-    modifier_question : async function(questionId, newTitle, newQuestionnaireId) {
-      this.cache['questions'][questionId] = await update_question (
-        questionId, 
-        newTitle, 
-        newQuestionnaireId
+    modifier_question : async function(question) {
+      const rep = await update_question(
+        question.questionId,
+        question.newTitle,
+        question.newQuestionnaireId
       );
+      if (typeof rep === 'object' && rep !== null) {
+        for (let i = 0 ; i < this.cache['questions'].length ; i++) {
+          console.log(this.cache['questions'][i]);
+          if (this.cache['questions'][i].id == question.questionId) {
+            this.cache['questions'][i] = rep;
+          }
+        }
+      }
     },
     supprimer_questionnaire : async function(questionnaireId) {
       const rep = await delete_questionnaire(
@@ -113,7 +133,7 @@ export default {
     },
     supprimer_question : async function(questionId) {
       const rep = await delete_question (
-        questionId.id_question, 
+        questionId.id_question,
       );
       if (rep['valid']) {
         for (let i = 0 ; i < this.cache['questions'].length ; i++) {
@@ -184,11 +204,13 @@ export default {
         <tr>
           <th> ID </th>
           <th> Titre </th>
+          <th> Questionnaire </th>
           <th> Supp/Modif </th>
         </tr>
         <Question
           v-for="question of cache['questions']"
           :key="question.id"
+          :questionnaires="cache['questionnaires']"
           :question="question"
           @supprimer="supprimer_question"
           @modifier_question="modifier_question">

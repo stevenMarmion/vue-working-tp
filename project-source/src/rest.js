@@ -94,23 +94,6 @@ export async function create_question(jsonDatas) {
     return json;
 }
 
-export async function click_create_questionnaire(name) {
-    await create_questionnaire(
-        {
-            "name":name
-        }
-    );
-}
-
-export async function click_create_question(title, id){
-    await create_question(
-        {
-            "title":title,
-            "questionnaire_id":id
-        }
-    );
-}
-
 // ================== PUT ==================
 
 export async function update_questionnaire(questionnaireId, newName) {

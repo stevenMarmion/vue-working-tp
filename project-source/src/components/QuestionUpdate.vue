@@ -1,17 +1,29 @@
 <script>
 
 export default {
+    data() {
+      return {
+        questionnaire_id : null
+      }
+    },
     props : {
         question :  {
+          type : Object
+        },
+        questionnaires : {
           type : Object
         }
     },
     methods: {
         valider : function() {
-            this.$emit('valide-custom', { question : this.question })
+            this.$emit('valide-custom', {
+              question : this.question
+            })
         },
         fermer : function() {
-            this.$emit('close-custom', { question : this.question })
+            this.$emit('close-custom', { 
+              question : this.question
+            })
         },
     },
     emits : ['valide-custom', 'close-custom']
@@ -30,6 +42,14 @@ export default {
       <div>
         <label :for="question.title">Titre :</label>
         <input type="text" v-model="question.title"/>
+      </div>
+      <div>
+        <label :for="questionnaire_id">ID du questionnaire</label>
+        <select v-model="question.questionnaire_id">
+          <option v-for="(questionnaire, key) in questionnaires" :key="key" :value="questionnaire.id">
+            {{ questionnaire.name }}
+          </option>
+        </select>
       </div>
       <div class="popup-buttons">
         <button @click="valider">Valider</button>
