@@ -31,7 +31,10 @@ export default {
         this.$emit('modifier_question', { 
           questionId : this.question.id,
           newTitle : this.question.title,
-          newQuestionnaireId : this.question.questionnaire_id
+          newQuestionnaireId : this.question.questionnaire_id,
+          reponse1: this.question['reponse1'],
+          reponse2: this.question['reponse2'],
+          bonneReponse: this.question['bonneReponse']
         })
       },
     },

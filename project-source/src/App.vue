@@ -83,8 +83,8 @@ export default {
         this.cache['questionnaires'].push(rep);
       }
     },
-    ajouter_question: async function(title, questionaire_id) {
-      const rep = await create_question(title, questionaire_id);
+    ajouter_question: async function(title, questionaire_id,reponse1,reponse2,bonneReponse) {
+      const rep = await create_question(title, questionaire_id,reponse1,reponse2,bonneReponse);
       if (typeof rep === 'object' && rep !== null) {
         this.cache['questions'].push(rep);
       }
@@ -107,7 +107,10 @@ export default {
       const rep = await update_question(
         question.questionId,
         question.newTitle,
-        question.newQuestionnaireId
+        question.newQuestionnaireId,
+        question.reponse1,
+        question.reponse2,
+        question.bonneReponse,
       );
       if (typeof rep === 'object' && rep !== null) {
         for (let i = 0 ; i < this.cache['questions'].length ; i++) {

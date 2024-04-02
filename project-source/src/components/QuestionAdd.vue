@@ -11,15 +11,22 @@ export default {
             questionnaire_id: null,
             error_message : "Un des champs n'est pas remplit",
             show_error_message : false,
+            reponses : {1:null,2:null},
+            bonne_reponse : null
         }
     },
     methods: {
       valider() {
+        console.log(this.bonne_reponse)
+        console.log
         if (this.title != null && this.title != " " && this.title != "" && this.title != undefined) {
           if (this.questionnaire_id != null && this.questionnaire_id != " " && this.questionnaire_id != "" && this.questionnaire_id != undefined) {
             this.$emit('valide-custom', { 
               title: this.title, 
-              questionnaire_id: this.questionnaire_id 
+              questionnaire_id: this.questionnaire_id,
+              reponse1:this.reponses[1],
+              reponse2:this.reponses[2],
+              bonneReponse:this.bonne_reponse
             });
           } else {
             this.turn_true_show_error_message();
@@ -58,6 +65,11 @@ export default {
             {{ questionnaire.name }}
           </option>
         </select>
+      </div>
+      <div v-for="(reponse, key) in reponses" :key="key">
+        <label :for="reponse">Nom de la reponse</label>
+        <input type="text" v-model="reponses[key]"/>
+        <input type="radio" name="bonneRep" v-bind:value="key" v-model="bonne_reponse">bonne reponse</input>
       </div>
       <p v-if="show_error_message" style="color: red;">
         {{ error_message }}

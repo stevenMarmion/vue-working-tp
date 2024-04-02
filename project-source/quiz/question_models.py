@@ -25,6 +25,9 @@ class Question(db.Model):
     # questionType = db.Column(db.String(120))
     questionnaire_id = db.Column(db.Integer, db.ForeignKey('questionnaire.id'))
     questionnaire = db.relationship("Questionnaire", backref = db.backref("questions", lazy="dynamic"))
+    reponse1 = db.Column(db.String(120))
+    reponse2 = db.Column(db.String(120))
+    bonneReponse = db.Column(db.Integer)
 
     def __repr__(self) -> str:
         return f"<Question {self.id} : {self.title}>"
@@ -35,7 +38,10 @@ class Question(db.Model):
             'questionnaire_id':self.questionnaire_id,
             'url_question':url_for('get_question', question_id=self.id, _external=True),
             'url_questionnaire':url_for('get_questionnaire', questionnaire_id=self.id, _external=True),
-            'title':self.title
+            'title':self.title,
+            'reponse1':self.reponse1,
+            'reponse2':self.reponse2,
+            'bonneReponse':self.bonneReponse
         }
         return json
     
@@ -66,7 +72,12 @@ def db_create_questionnaire(json_datas):
 def db_create_question(json_datas):
     if json_datas['title'] == "" or json_datas['questionnaire_id'] == "": 
         abort(400)
-    question = Question(title=json_datas['title'], questionnaire_id=json_datas['questionnaire_id'])
+    question = Question(
+        title=json_datas['title'], 
+        questionnaire_id=json_datas['questionnaire_id'],
+        reponse1=json_datas['reponse1'], 
+        reponse2=json_datas['reponse2'], 
+        bonneReponse=json_datas['bonneReponse'])
     db.session.add(question)
     db.session.commit()
     return question
@@ -88,9 +99,12 @@ def db_update_question(question_id, json_datas):
     question = Question.query.get(question_id)
     if not question:
         abort(404)
-    if 'title' in json_datas and 'questionnaire_id' in json_datas and json_datas['title'] != "" and json_datas['questionnaire_id'] != "":
+    if 'title' in json_datas and 'questionnaire_id' in json_datas and json_datas['title'] != "" and json_datas['questionnaire_id'] != "" and 'reponse1' in json_datas and 'reponse2' in json_datas and 'bonneReponse' in json_datas:
         question.title = json_datas['title']
         question.questionnaire_id = json_datas['questionnaire_id']
+        question.reponse1 = json_datas['reponse1']
+        question.reponse2 = json_datas['reponse2']
+        question.bonneReponse = json_datas['bonneReponse']
     else:
         abort(400)
     db.session.commit()

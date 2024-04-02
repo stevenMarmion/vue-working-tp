@@ -51,6 +51,18 @@ export default {
           </option>
         </select>
       </div>
+      <div>
+        <label >Nom de la reponse</label>
+        <input type="text" v-model="question['reponse1']"/>
+        <input type="radio" name="bonneRep" v-bind:value="1" v-model="question['bonneReponse']" v-if="question['bonneReponse']==1" checked></input>
+        <input type="radio" name="bonneRep" v-bind:value="1" v-model="question['bonneReponse']" v-if="question['bonneReponse']==2"></input>
+      </div>
+      <div>
+        <label >Nom de la reponse</label>
+        <input type="text" v-model="question['reponse2']"/>
+        <input type="radio" name="bonneRep" v-bind:value="2" v-model="question['bonneReponse']" v-if="question['bonneReponse']==2" checked></input>
+        <input type="radio" name="bonneRep" v-bind:value="2" v-model="question['bonneReponse']" v-if="question['bonneReponse']==1"></input>
+      </div>
       <div class="popup-buttons">
         <button @click="valider">Valider</button>
         <button @click="fermer">Fermer</button>

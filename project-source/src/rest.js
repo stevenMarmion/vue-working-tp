@@ -111,7 +111,7 @@ export async function update_questionnaire(questionnaireId, newName) {
     return json;
 }
 
-export async function update_question(questionId, newTitle, newQuestionnaireId) {
+export async function update_question(questionId, newTitle, newQuestionnaireId, reponse1, reponse2, bonneReponse) {
     const rep = await fetch(API_URL + `/questionnaire/api/v1.0/questions/${questionId}`, {
         "method": 'PUT',
         "headers": {
@@ -121,7 +121,10 @@ export async function update_question(questionId, newTitle, newQuestionnaireId) 
         },
         "body": JSON.stringify({
             title: newTitle,
-            questionnaire_id: newQuestionnaireId
+            questionnaire_id: newQuestionnaireId,
+            reponse1 : reponse1,
+            reponse2 : reponse2,
+            bonneReponse : bonneReponse
         })
     });
     const json = await rep.json();
