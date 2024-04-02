@@ -21,6 +21,9 @@ export default {
       close : function() { 
         this.show_modal = false;
       },
+      show_detail : function() {
+        this.$emit('show_detail', { id_questionnaire : this.questionnaire['id'] })
+      },
       supprimer : function() {
         this.$emit('supprimer', { id_questionnaire : this.questionnaire['id'] })
       },
@@ -32,14 +35,14 @@ export default {
       },
     },
     components: {QuestionnaireUpdate},
-    emits: ['supprimer', 'modifier_questionnaire']
+    emits: ['supprimer', 'modifier_questionnaire','show_detail']
 }
 </script>
 
 <template>
     <tr>
       <td> {{ questionnaire.id }} </td>
-      <td> <a href="">{{ questionnaire.name }}</a></td>
+      <td> <a @click="show_detail">{{ questionnaire.name }}</a></td>
       <td> {{ questionnaire.questions.length }} question(s)</td>
       <td> <button @click="supprimer">❌</button> <button @click="open_modal">🖌️</button> </td>
     </tr>

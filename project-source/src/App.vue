@@ -15,6 +15,7 @@ import Questionnaire from './components/Questionnaire.vue';
 import Question from './components/Question.vue';
 import QuestionnaireAdd from './components/QuestionnaireAdd.vue';
 import QuestionAdd from './components/QuestionAdd.vue';
+import InfoQuestionnaire from './components/InfoQuestionnaire.vue';
 
 export default {
   data() {
@@ -23,6 +24,7 @@ export default {
       show_question: false,
       show_questionnaire_add: false,
       show_question_add: false,
+      detail_questionnaire:null,
       cache: {
         questionnaires: new Map(),
         questions: new Map()
@@ -58,6 +60,18 @@ export default {
     turn_false_show_question_add : function() {
       this.show_question_add = false;
     },
+    show_detail : async function(questionnaireId) {
+      questionnaireId = questionnaireId['id_questionnaire'];
+      console.log(questionnaireId);
+      for (let i = 0 ; i < this.cache['questionnaires'].length ; i++) {
+        console.log(this.cache['questionnaires'][i].id);
+          if (this.cache['questionnaires'][i].id == questionnaireId) {
+            this.detail_questionnaire = this.cache['questionnaires'][i];
+            console.log(this.detail_questionnaire);
+          }
+        }
+
+    },
     show_add_popups : function() {
       if (this.show_questionnaire) {
         this.turn_false_show_questionnaire_add();
@@ -71,11 +85,13 @@ export default {
       this.cache['questionnaires'] = await get_all_questionnaires();
       this.turn_false_show_question();
       this.turn_true_show_questionnaire();
+      this.detail_questionnaire=null;
     },
     questions : async function() {
       this.cache['questions'] = await get_all_questions();
       this.turn_false_show_questionnaire();
       this.turn_true_show_question();
+      this.detail_questionnaire=null;
     },
     ajouter_questionnaire: async function(name) {
       const rep = await create_questionnaire(name);
@@ -160,7 +176,7 @@ export default {
               'Ajouter une question' : ''
     },
   },
-  components: {Questionnaire, Question, QuestionnaireAdd, QuestionAdd}
+  components: {Questionnaire, Question, QuestionnaireAdd, QuestionAdd, InfoQuestionnaire}
 }
 </script>
 
@@ -199,7 +215,8 @@ export default {
           :key="questionnaire.id"
           :questionnaire="questionnaire"
           @supprimer="supprimer_questionnaire"
-          @modifier_questionnaire="modifier_questionnaire">
+          @modifier_questionnaire="modifier_questionnaire"
+          @show_detail="show_detail">
         </Questionnaire>
       </table>
 
@@ -225,6 +242,11 @@ export default {
           @close-custom="turn_false_show_question_add">
         </QuestionAdd>
       </table>
+
+      <InfoQuestionnaire v-if="detail_questionnaire" :questionnaire="detail_questionnaire">
+
+      </InfoQuestionnaire>
+
     </div>
   </section>
 </template>
