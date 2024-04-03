@@ -12,12 +12,14 @@ export default {
     }
   },
   methods : {
-    repondre : function(liste_reponse) {
-      this.$emit('repondre', { id_questionnaire : this.questionnaire['id'] , liste_reponse : liste_reponse })
-    
+    repondre : function() {
+      this.$emit('repondre', { 
+        id_questionnaire : this.questionnaire['id'],
+        liste_reponse : this.liste_reponse
+      })
+    },
   },
-  },
-emits: ['repondre']
+  emits: ['repondre']
 }
 </script>
 
@@ -42,6 +44,6 @@ emits: ['repondre']
         </ul>
       </li>
     </ul>
-    <button @click="repondre(liste_reponse)">Valider</button>
+    <button @click="repondre">Valider</button>
   </div>
 </template>

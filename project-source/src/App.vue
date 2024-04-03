@@ -163,6 +163,10 @@ export default {
         }
       }
     },
+    repondre : function(datas) {
+      console.log(datas)
+      console.log(datas.id_questionnaire, datas.liste_reponse)
+    },
   },
   computed : {
     titleComputed() {
@@ -243,8 +247,9 @@ export default {
         </QuestionAdd>
       </table>
 
-      <InfoQuestionnaire v-if="detail_questionnaire" :questionnaire="detail_questionnaire">
-
+      <InfoQuestionnaire v-if="detail_questionnaire" 
+        :questionnaire="detail_questionnaire"
+        @repondre="repondre">
       </InfoQuestionnaire>
 
     </div>

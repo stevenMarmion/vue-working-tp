@@ -46,8 +46,8 @@ export default {
 <template>
     <tr>
       <td> {{ question.id }} </td>
-      <td> <a href="">{{ question.title }}</a></td>
-      <td> <a href="">{{ question.questionnaire_id }}</a></td>
+      <td> {{ question.title }}</td>
+      <td> {{ question.questionnaire_id }}</td>
       <td> <button @click="supprimer">❌</button> <button @click="open_modal">🖌️</button> </td>
     </tr>
 
