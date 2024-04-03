@@ -25,7 +25,7 @@ Puis exécuter cette commande :
 npm install
 ```
 
-Et 
+Et
 
 ```bash
 npm run dev
@@ -40,4 +40,37 @@ Pour lancer le backend, merci de vous rendre dans le dossier project-source/quiz
 cd project-source/quiz
 ```
 
-Puis entrez dans le venv, si il n'y a pas 
+Puis entrez dans le venv, si il n'y a pas de venv dans l'arborescence, merci de suivre les commandes ci-dessous :
+
+Création du venv : 
+
+```bash
+virtualenv -p python3 venv
+```
+
+Puis entrez dedans :
+
+```bash
+source venv/bin/activate
+```
+
+Une fois dans le venv, merci d'installer les dépendances utiles au projet :
+
+```bash
+pip install -r requirments.txt
+```
+
+Une fois toutes les dépendances installées, merci d'éxecuter la commande suivante :
+
+
+```bash
+flask run --debug
+```
+
+### Navigation
+
+Une fois le frontend et la backend lancé, entrer sur l'url suivante suivante :
+
+```text
+http://localhost:5173
+```
