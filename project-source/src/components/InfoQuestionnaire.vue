@@ -6,6 +6,18 @@ export default {
       type: Object
     }
   },
+  data() {
+    return {
+      liste_reponse : Array(this.questionnaire.questions.length).fill(0),
+    }
+  },
+  methods : {
+    repondre : function(liste_reponse) {
+      this.$emit('repondre', { id_questionnaire : this.questionnaire['id'] , liste_reponse : liste_reponse })
+    
+  },
+  },
+emits: ['repondre']
 }
 </script>
 
@@ -21,14 +33,15 @@ export default {
         <ul>
             <li>
                 <p>{{ question.reponse1 }}</p>
+                <input type="radio" v-model="liste_reponse[question.id]" value="1">
             </li>
             <li>
                 <p>{{ question.reponse2 }}</p>
+                <input type="radio" v-model="liste_reponse[question.id]" value="2">
             </li>
         </ul>
-        <p>la numéro {{  question.bonneReponse }} est la bonne réponse</p>
-        
       </li>
     </ul>
+    <button @click="repondre(liste_reponse)">Valider</button>
   </div>
 </template>
