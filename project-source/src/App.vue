@@ -19,7 +19,6 @@ import InfoQuestionnaire from './components/InfoQuestionnaire.vue';
 
 export default {
   data() {
-<<<<<<< HEAD
     return {
       show_questionnaire: false,
       show_question: false,
@@ -35,22 +34,6 @@ export default {
   async created() {
     this.cache['questionnaires'] = await get_all_questionnaires();
     this.cache['questions'] = await get_all_questions();
-=======
-    return [
-      questionnaires = [
-        { id : 1, titre : 'questionnaire1', questions : [1,2,3] },
-        { id : 2, titre : 'questionnaire2', questions : [4,5,6] },
-      ],
-      questions = [
-        {  id : 1, texte : 'question1'  },
-        {  id : 2, texte : 'question2'  },
-        {  id : 3, texte : 'question3'  },
-        {  id : 4, texte : 'question4'  },
-        {  id : 5, texte : 'question5'  },
-        {  id : 6, texte : 'question6'  }
-      ]
-    ]
->>>>>>> 0fb70b8009db296135d6e3fae96078aa5bfeca82
   },
   methods : {
     turn_true_show_questionnaire : function() {
