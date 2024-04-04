@@ -5,4 +5,5 @@ def syncdb():
     """
         Create all tables described in the models
     """
+    db.drop_all()
     db.create_all()

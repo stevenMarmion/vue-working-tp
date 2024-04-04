@@ -71,9 +71,15 @@ def update_question(question_id):
 @app.route('/questionnaire/api/v1.0/questionnaires/<int:questionnaire_id>', methods=['DELETE'])
 def delete_questionnaire(questionnaire_id):
     response = db_delete_questionnaire(questionnaire_id)
-    return jsonify({"message": response})
+    return jsonify({
+        "message": response[0],
+        "valid" : response[1]
+    })
 
 @app.route('/questionnaire/api/v1.0/questions/<int:question_id>', methods=['DELETE'])
 def delete_question(question_id):
     response = db_delete_question(question_id)
-    return jsonify({"message": response})
+    return jsonify({
+        "message": response[0],
+        "valid" : response[1]
+    })
